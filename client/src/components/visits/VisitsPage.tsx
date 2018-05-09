@@ -9,6 +9,7 @@ import DateInput from '../form/DateInput';
 import Input from '../form/Input';
 import PetDetails from './PetDetails';
 
+import { IVet } from '../../types';
 
 interface IVisitsPageProps {
   params: {
@@ -21,6 +22,7 @@ interface IVisitsPageState {
   visit?: IVisit;
   owner?: IOwner;
   error?: IError;
+  vets ?: IVet[];
 }
 
 export default class VisitsPage extends React.Component<IVisitsPageProps, IVisitsPageState> {
@@ -39,6 +41,14 @@ export default class VisitsPage extends React.Component<IVisitsPageProps, IVisit
     this.onSubmit = this.onSubmit.bind(this);
   }
 
+  getVets() {
+    const requestUrl = url('api/vets');
+
+    fetch(requestUrl)
+      .then(response => response.json())
+      .then(vets => { console.log('vets', vets); this.setState({ vets:  vets } ); });
+  }
+
   componentDidMount() {
     const { params } = this.props;
 
@@ -52,6 +62,7 @@ export default class VisitsPage extends React.Component<IVisitsPageProps, IVisit
           })
         );
     }
+    this.getVets();
   }
 
   onSubmit(event) {
@@ -87,11 +98,12 @@ export default class VisitsPage extends React.Component<IVisitsPageProps, IVisit
   }
 
   render() {
+
     if (!this.state) {
       return <h2>Loading...</h2>;
     }
 
-    const { owner, error, visit } = this.state;
+    const { owner, error, visit, vets } = this.state;
     const petId = this.props.params.petId;
 
     const pet = owner.pets.find(candidate => candidate.id.toString() === petId);
@@ -101,7 +113,12 @@ export default class VisitsPage extends React.Component<IVisitsPageProps, IVisit
         <h2>Visits</h2>
         <b>Pet</b>
         <PetDetails owner={owner} pet={pet} />
-
+        <select>
+        {vets.map(vet => (
+              <option>
+              {vet.firstName} {vet.lastName}</option>
+              ))}
+        </select>
         <form className='form-horizontal' method='POST' action={url('/api/owner')}>
           <div className='form-group has-feedback'>
             <DateInput object={visit} error={error} label='Date' name='date' onChange={this.onInputChange} />
