@@ -9,6 +9,7 @@ import DateInput from '../form/DateInput';
 import Input from '../form/Input';
 import PetDetails from './PetDetails';
 
+import Calendar from 'react-calendar';
 import { IVet } from '../../types';
 
 interface IVisitsPageProps {
@@ -23,6 +24,7 @@ interface IVisitsPageState {
   owner?: IOwner;
   error?: IError;
   vets ?: IVet[];
+  date ?: Date;
 }
 
 export default class VisitsPage extends React.Component<IVisitsPageProps, IVisitsPageState> {
@@ -97,6 +99,8 @@ export default class VisitsPage extends React.Component<IVisitsPageProps, IVisit
     );
   }
 
+  onChange = date => this.setState({ date })
+
   render() {
 
     if (!this.state) {
@@ -119,6 +123,10 @@ export default class VisitsPage extends React.Component<IVisitsPageProps, IVisit
               {vet.firstName} {vet.lastName}</option>
               ))}
         </select>
+        <Calendar
+          onChange={this.onChange}
+          value={this.state.date}
+        />
         <form className='form-horizontal' method='POST' action={url('/api/owner')}>
           <div className='form-group has-feedback'>
             <DateInput object={visit} error={error} label='Date' name='date' onChange={this.onInputChange} />
