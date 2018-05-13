@@ -15,7 +15,6 @@
  */
 package org.springframework.samples.petclinic.service;
 
-import java.util.Calendar;
 import java.util.Collection;
 import java.util.List;
 
@@ -112,46 +111,22 @@ public class ClinicServiceImpl implements ClinicService {
 		return visitRepository.findByPetId(petId);
 	}
 
-	public boolean scheduleVisit(int petId, int vetId, String date, int time) {
-		Calendar cal = getCalendarInstance(date, time);
-		long appointmentStart = cal.getTimeInMillis();
-		cal.add(Calendar.HOUR, 1);
-		long appointmentEnd = cal.getTimeInMillis();
+	public boolean scheduleVisit(int petId, int vetId, Visit visit) {
 
-		List<Visit> conflictingVisits = visitRepository.findVisitsBySchedule(petId, vetId, appointmentStart,
-				appointmentEnd);
+		List<Visit> conflictingVisits = visitRepository.findVisitsBySchedule(petId, vetId, visit.getAppointmentStart(),
+				visit.getAppointmentEnd());
 		if (conflictingVisits.isEmpty()) {
-			Visit createNewVisit = new Visit();
-			createNewVisit.setPet(petRepository.findById(petId));
-			createNewVisit.setVet(vetRepository.findById(vetId));
-			createNewVisit.setAppointmentStart(appointmentStart);
-			createNewVisit.setAppointmentEnd(appointmentEnd);
-			createNewVisit.setDate(LocalDate.fromCalendarFields(cal));
-			visitRepository.save(createNewVisit);
+			visit.setPet(petRepository.findById(petId));
+			visit.setVet(vetRepository.findById(vetId));
+			visitRepository.save(visit);
 			return true;
 		} else {
 			return false;
 		}
 	}
 
-	public List<Visit> findVisitsByDay(int petId, int vetId, String date) {
-		Calendar cal = getCalendarInstance(date, 0);
-		return visitRepository.findVisitsByDay(petId, vetId, LocalDate.fromCalendarFields(cal));
+	public List<Visit> findVisitsByDay(int petId, int vetId, LocalDate date) {
+		return visitRepository.findVisitsByDay(petId, vetId, date);
 	}
 
-	private Calendar getCalendarInstance(String date, int time) {
-		String[] dateArray = date.split("/");
-
-		Calendar cal = Calendar.getInstance();
-		Calendar appointmentTime = cal;
-		appointmentTime.setTimeInMillis(time);
-		cal.setTimeInMillis(0);
-		if (time == 0) {
-			cal.set(Integer.valueOf(dateArray[2]), Integer.valueOf(dateArray[0]), Integer.valueOf(dateArray[1]));
-		} else {
-			cal.set(Integer.valueOf(dateArray[2]), Integer.valueOf(dateArray[0]), Integer.valueOf(dateArray[1]),
-					appointmentTime.get(Calendar.HOUR_OF_DAY), appointmentTime.get(Calendar.MINUTE));
-		}
-		return cal;
-	}
 }

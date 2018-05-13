@@ -24,7 +24,7 @@ import javax.persistence.Table;
 import org.hibernate.annotations.Type;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.joda.time.LocalDate;
-import org.springframework.core.style.ToStringCreator;
+import org.joda.time.LocalDateTime;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -52,13 +52,19 @@ public class Visit extends BaseEntity {
 	 * Holds value of appointment start.
 	 */
 	@Column(name = "visit_start")
-	private long appointmentStart;
+	@Type(type = "org.jadira.usertype.dateandtime.joda.PersistentLocalDateTime")
+	@DateTimeFormat(pattern = "yyyy/MM/dd HH:mm:ss")
+	@JsonFormat(pattern = "yyyy/MM/dd HH:mm:ss")
+	private LocalDateTime appointmentStart;
 
 	/**
 	 * Holds value of appointment start.
 	 */
 	@Column(name = "visit_end")
-	private long appointmentEnd;
+	@Type(type = "org.jadira.usertype.dateandtime.joda.PersistentLocalDateTime")
+	@DateTimeFormat(pattern = "yyyy/MM/dd HH:mm:ss")
+	@JsonFormat(pattern = "yyyy/MM/dd HH:mm:ss")
+	private LocalDateTime appointmentEnd;
 
 	/**
 	 * Holds value of property description.
@@ -172,7 +178,7 @@ public class Visit extends BaseEntity {
 	 * @param pet
 	 *            New value of property pet.
 	 */
-	public void setAppointmentStart(long appointmentStart) {
+	public void setAppointmentStart(LocalDateTime appointmentStart) {
 		this.appointmentStart = appointmentStart;
 	}
 
@@ -182,7 +188,7 @@ public class Visit extends BaseEntity {
 	 * @param pet
 	 *            New value of property pet.
 	 */
-	public long getAppointmentStart() {
+	public LocalDateTime getAppointmentStart() {
 		return this.appointmentStart;
 	}
 
@@ -192,7 +198,7 @@ public class Visit extends BaseEntity {
 	 * @param pet
 	 *            New value of property pet.
 	 */
-	public void setAppointmentEnd(long appointmentEnd) {
+	public void setAppointmentEnd(LocalDateTime appointmentEnd) {
 		this.appointmentEnd = appointmentEnd;
 	}
 
@@ -202,17 +208,8 @@ public class Visit extends BaseEntity {
 	 * @param pet
 	 *            New value of property pet.
 	 */
-	public long getAppointmentEnd() {
+	public LocalDateTime getAppointmentEnd() {
 		return this.appointmentEnd;
-	}
-
-	@Override
-	public String toString() {
-		return new ToStringCreator(this)
-
-				.append("id", this.getId()).append("visitDate", this.getDate())
-				.append("appointmentStart", this.getAppointmentStart())
-				.append("appointmentEnd", this.getAppointmentEnd()).toString();
 	}
 
 }

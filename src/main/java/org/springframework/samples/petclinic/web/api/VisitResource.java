@@ -26,8 +26,9 @@ import org.springframework.samples.petclinic.model.Visit;
 import org.springframework.samples.petclinic.service.ClinicService;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -47,10 +48,10 @@ public class VisitResource extends AbstractResourceController {
 		this.clinicService = clinicService;
 	}
 
-	@PostMapping("/owners/{ownerId}/pets/{petId}/visits")
-	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void createÏ(@PathVariable("petId") int petId, @Valid @RequestBody Visit visit,
-			BindingResult bindingResult) {
+	@RequestMapping(value = "/pet/{petId}/vet/{vetId}/createvisit", method = RequestMethod.POST)
+	@ResponseStatus(HttpStatus.CREATED)
+	public boolean createVet(@PathVariable("petId") int petId, @PathVariable("vetId") int vetId,
+			@Valid @RequestBody Visit visit, BindingResult bindingResult) {
 		if (bindingResult.hasErrors()) {
 			throw new InvalidRequestException("Visit is invalid", bindingResult);
 		}
@@ -60,27 +61,18 @@ public class VisitResource extends AbstractResourceController {
 			throw new BadRequestException("Pet with Id '" + petId + "' is unknown.");
 		}
 
-		pet.addVisit(visit);
+		// pet.addVisit(visit);
 
-		clinicService.saveVisit(visit);
+		// clinicService.saveVisit(visit);
+		return clinicService.scheduleVisit(petId, vetId, visit);
 	}
 
-	/*
-	 * @GetMapping("/visits/{vetId}") public List<Visit>
-	 * findVetVisits(@PathVariable("vetId") int vetId) {
-	 * 
-	 * List<Visit> vists = clinicService.findVisitsByVetId(vetId); return vists;
-	 * }
-	 */
-	@PostMapping("/pets/{petId}/vet/{vetId}/date/{date}/time/{time}")
-	public boolean scheduleVisit(@PathVariable("petId") int petId, @PathVariable("vetId") int vetId,
-			@PathVariable("date") String date, @PathVariable("time") int time) {
-		return clinicService.scheduleVisit(petId, vetId, date, time);
-	}
-
-	@PostMapping("/pets/{petId}/vet/{vetId}/date/{date}")
-	public List<Visit> scheduleVisit(@PathVariable("petId") int petId, @PathVariable("vetId") int vetId,
-			@PathVariable("date") String date) {
-		return clinicService.findVisitsByDay(petId, vetId, date);
+	@RequestMapping(value = "/pet/{petId}/vet/{vetId}/findvisits", method = RequestMethod.POST)
+	public List<Visit> findVisitsByDay(@PathVariable("petId") int petId, @PathVariable("vetId") int vetId,
+			@Valid @RequestBody Visit visit, BindingResult bindingResult) {
+		if (bindingResult.hasErrors()) {
+			throw new InvalidRequestException("Visit is invalid", bindingResult);
+		}
+		return clinicService.findVisitsByDay(petId, vetId, visit.getDate());
 	}
 }

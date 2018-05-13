@@ -19,8 +19,6 @@ import java.util.Collection;
 
 import javax.validation.Valid;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.samples.petclinic.model.Owner;
@@ -43,7 +41,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class OwnerResource extends AbstractResourceController {
 
-	private final ClinicService	clinicService;
+	private final ClinicService clinicService;
 
 	@Autowired
 	public OwnerResource(ClinicService clinicService) {
@@ -105,7 +103,8 @@ public class OwnerResource extends AbstractResourceController {
 		}
 
 		Owner ownerModel = retrieveOwner(ownerId);
-		// This is done by hand for simplicity purpose. In a real life use-case we
+		// This is done by hand for simplicity purpose. In a real life use-case
+		// we
 		// should consider using MapStruct.
 		ownerModel.setFirstName(ownerRequest.getFirstName());
 		ownerModel.setLastName(ownerRequest.getLastName());
