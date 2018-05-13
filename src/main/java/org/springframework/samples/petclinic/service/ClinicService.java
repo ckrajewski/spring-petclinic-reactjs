@@ -50,6 +50,8 @@ public interface ClinicService {
 
 	Collection<Visit> findVisitsByPetId(int petId);
 
-	List<Visit> findVisitsByVetId(int vetId);
+	List<Visit> findVisitsByDay(int petId, int vetId, String date);
+
+	boolean scheduleVisit(int petId, int vetId, String date, int time);
 
 }

@@ -15,6 +15,8 @@
  */
 package org.springframework.samples.petclinic.web.api;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,7 +49,8 @@ public class VisitResource extends AbstractResourceController {
 
 	@PostMapping("/owners/{ownerId}/pets/{petId}/visits")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void createÏ(@PathVariable("petId") int petId, @Valid @RequestBody Visit visit, BindingResult bindingResult) {
+	public void createÏ(@PathVariable("petId") int petId, @Valid @RequestBody Visit visit,
+			BindingResult bindingResult) {
 		if (bindingResult.hasErrors()) {
 			throw new InvalidRequestException("Visit is invalid", bindingResult);
 		}
@@ -60,5 +63,24 @@ public class VisitResource extends AbstractResourceController {
 		pet.addVisit(visit);
 
 		clinicService.saveVisit(visit);
+	}
+
+	/*
+	 * @GetMapping("/visits/{vetId}") public List<Visit>
+	 * findVetVisits(@PathVariable("vetId") int vetId) {
+	 * 
+	 * List<Visit> vists = clinicService.findVisitsByVetId(vetId); return vists;
+	 * }
+	 */
+	@PostMapping("/pets/{petId}/vet/{vetId}/date/{date}/time/{time}")
+	public boolean scheduleVisit(@PathVariable("petId") int petId, @PathVariable("vetId") int vetId,
+			@PathVariable("date") String date, @PathVariable("time") int time) {
+		return clinicService.scheduleVisit(petId, vetId, date, time);
+	}
+
+	@PostMapping("/pets/{petId}/vet/{vetId}/date/{date}")
+	public List<Visit> scheduleVisit(@PathVariable("petId") int petId, @PathVariable("vetId") int vetId,
+			@PathVariable("date") String date) {
+		return clinicService.findVisitsByDay(petId, vetId, date);
 	}
 }
