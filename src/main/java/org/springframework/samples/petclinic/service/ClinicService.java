@@ -55,4 +55,5 @@ public interface ClinicService {
 
 	boolean scheduleVisit(int petId, int vetId, Visit visit);
 
+	void deleteVisit(int visitId);
 }

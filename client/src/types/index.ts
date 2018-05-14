@@ -30,6 +30,8 @@ export interface IConstraint {
   validate: (value: any) => boolean;
 }
 
+export type IBasicInputChangeHandler = (value: string) => void;
+
 export type IInputChangeHandler = (name: string, value: string, error: IFieldError) => void;
 
 export interface ISelectOption {
@@ -56,8 +58,8 @@ interface IPerson extends IBaseEntity {
 export interface IVisit extends IBaseEntity {
   date: Date;
   description: string;
-  appointmentStart: Date;
-  appointmentEnd: Date;
+  appointmentStart: string;
+  appointmentEnd: string;
 };
 
 export interface IPetType extends INamedEntity {

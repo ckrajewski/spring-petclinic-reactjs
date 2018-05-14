@@ -9,6 +9,7 @@ import DateInput from '../form/DateInput';
 import Input from '../form/Input';
 import PetDetails from './PetDetails';
 import VisitDetails from './VisitDetails';
+import VisitVetsList from './VisitVetsList';
 
 
 const TimePicker = require('rc-time-picker');
@@ -52,78 +53,78 @@ export default class VisitsPage extends React.Component<IVisitsPageProps, IVisit
     super(props);
     this.onInputChange = this.onInputChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
+    this.setVetId = this.setVetId.bind(this);
   }
-
-  getVets(owner) {
-    const requestUrl = url('api/vets');
-    // var owner = owner;
-    fetch(requestUrl)
-      .then(function(response,owner) { return response.json(); })
-      .then(vets => {
-        let firstVetId = '';
-        if (vets.length > 0) {
-          firstVetId = vets[0].id;
-        }
-        this.setState({ vets:  vets, vetId : firstVetId } );
-      });
-  }
-
 getVisits() {
-  console.log('test');
+
   const petId = this.props.params.petId;
-  const { vetId, date } = this.state;
-  const formattedDate = moment(date).format('YYYY/MM/DD');
+  const { vetId, visit } = this.state;
   const request = {
-      date:  formattedDate,
-      description: 'NotNull'
+      date:  visit.date,
+      description: visit.description
     };
   const requestUrl = `/api/pet/${petId}/vet/${vetId}/findvisits`;
     submitForm('POST', requestUrl, request, (status, response) => {
         this.setState({ visits: response } );
     });
   }
-  componentDidMount() {
-    this.setState({date : new Date()});
-    this.setState({time : moment().hour(9).minute(0)});
+componentDidMount() {
     const { params } = this.props;
     if (params && params.ownerId) {
       fetch(url(`/api/owner/${params.ownerId}`))
         .then(response => response.json())
-        .then(owner => this.getVets(owner));
+        .then(owner => {
+          const today = new Date();
+          this.setState(
+          {
+            owner: owner,
+            date : today,
+            time : moment(today).hour(8).minute(0),
+            vetId: '',
+            visit:
+            {
+              id: null,
+              isNew: true,
+              date: moment(today).format('YYYY/MM/DD'),
+              description: '',
+              appointmentStart: moment(today).hour(8).minute(0).format('YYYY/MM/DD HH:mm:ss'),
+              appointmentEnd: moment(today).hour(9).minute(0).format('YYYY/MM/DD HH:mm:ss')
+            }
+          });
+        }
+        );
     }
   }
 
   onSubmit(event) {
     event.preventDefault();
-
     const petId = this.props.params.petId;
-    const { owner, visit, vetId, date, time, } = this.state;
-    const formattedTime = moment(time).format('HH:MM');
-    const formattedDate = moment(date).format('YYYY/MM/DD');
-    const day = moment(formattedDate + ' ' + formattedTime);
-    const formattedStart = moment(day).format('YYYY/MM/DD HH:mm:ss');
-    const formattedEnd = moment(day).add(1, 'hours').format('YYYY/MM/DD HH:mm:ss');
+    const { visit, owner, vetId } = this.state;
+    if (!this.validateAppointmentTime(visit.appointmentStart)) {
+      return;
+    }
     const request = {
-      date: formattedDate,
-      appointmentStart: formattedStart,
-      appointmentEnd: formattedEnd,
-      description: 'testing'
+      date: visit.date,
+      appointmentStart: visit.appointmentStart,
+      appointmentEnd: visit.appointmentEnd,
+      description: visit.description
     };
     const requestUrl = `/api/pet/${petId}/vet/${vetId}/createvisit`;
     submitForm('POST', requestUrl, request, (status, response) => {
-      if (status === 204) {
-        this.context.router.push({
-          pathname: '/owners/' + owner.id
-        });
-      } else {
-        console.log('ERROR?!...', response);
-        this.setState({ error: response });
+      if (status !== 201) {
+        alert(response.message);
       }
+      else if (response) {
+        alert('successfully created a visit!');
+      } else {
+        alert('There was a problem creating an appointment. Please see if someone has created one already');
+      }
+      this.getVisits();
+
     });
   }
-  setVetId(event) {
-    this.setState({ vetId : event.currentTarget.value});
-    this.getVisits();
+  setVetId(vetId) {
+    this.setState({ vetId: vetId });
   }
   onInputChange(name: string, value: string) {
     const { visit } = this.state;
@@ -133,9 +134,33 @@ getVisits() {
     );
   }
 
-  onDateChange = date => this.setState({ date });
-  onTimeChange = time => {
-    this.setState({ time });
+   noWeekends = ({date, view }) => {
+    return date.getDay() === 0 || date.getDay() === 6;
+  }
+
+  onDateChange = date => {
+    const formattedDate = moment(date).format('YYYY/MM/DD');
+    const { visit } = this.state;
+    this.setState({ date: date,
+      visit: Object.assign({}, visit, { date: formattedDate }) });
+  }
+
+  onAppontmentStarTimeChange = time => {
+    this.validateAppointmentTime(time);
+    const { date, visit } = this.state;
+    const formattedStartTime = moment(date + ' ' + time).format('YYYY/MM/DD HH:mm:ss');
+    const formattedEndTime = moment(date + ' ' + time).add(1, 'hours').format('YYYY/MM/DD HH:mm:ss');
+    this.setState({ time: time,
+      visit: Object.assign({}, visit, { appointmentStart: formattedStartTime, appointmentEnd: formattedEndTime }) });
+  }
+
+  validateAppointmentTime(time) {
+    const hour = moment(time).format('HH');
+    if ( hour < 8 || hour > 17) {
+      alert('Please choose a time between 8 AM and 5 PM');
+      return false;
+    }
+    return true;
   }
   render() {
 
@@ -143,7 +168,7 @@ getVisits() {
       return <h2>Loading...</h2>;
     }
 
-    const { owner, error, visit, vets, time, visits } = this.state;
+    const { owner, error, time, visit, visits } = this.state;
    // const today = moment.format(date, 'MM/DD');
     const petId = this.props.params.petId;
 
@@ -153,29 +178,25 @@ getVisits() {
         <h2>Visits</h2>
         <b>Pet</b>
         <PetDetails owner={owner} pet={pet} />
-        <VisitDetails visits={visits} />
         <Calendar
         value={this.state.date}
         onChange={this.onDateChange}
+        tileDisabled={this.noWeekends}
         />
     Select Appointment for
-    <select onChange ={this.setVetId}>
-        {vets.map(vet => (
-              <option value={vet.id.toString()}>
-              {vet.firstName} {vet.lastName}</option>
-              ))}
-        </select>
+    <VisitVetsList onChange={this.setVetId}/>
         At
         <TimePicker
     showSecond={false}
     defaultValue={time}
     className='xxx'
     format={myformat}
-    onChange={this.onInputChange}
+    onChange={this.onAppontmentStarTimeChange}
     use12Hours
     inputReadOnly
     />
       <div>
+      <Input object={visit} error={error} constraint={NotEmpty} label='Description' name='description' onChange={this.onInputChange} />
      <button className='btn btn-default' type='submit' onClick={this.onSubmit}>Add Visit</button>
       </div>
       </div>

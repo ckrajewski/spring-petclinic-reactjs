@@ -2,6 +2,7 @@ import * as React from 'react';
 
 import { Link } from 'react-router';
 import { IOwner, IPet } from '../../types';
+import  DeleteVisit  from '../visits/DeleteVisit';
 
 const VisitsTable = ({ownerId, pet}: { ownerId: number, pet: IPet }) => (
   <table className='table-condensed'>
@@ -16,6 +17,7 @@ const VisitsTable = ({ownerId, pet}: { ownerId: number, pet: IPet }) => (
         <tr key={visit.id}>
           <td>{visit.date}</td>
           <td>{visit.description}</td>
+          <td> <DeleteVisit visit={visit}/> </td>
         </tr>
       ))}
       <tr>

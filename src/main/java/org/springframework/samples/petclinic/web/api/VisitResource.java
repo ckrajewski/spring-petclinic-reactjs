@@ -25,6 +25,7 @@ import org.springframework.samples.petclinic.model.Pet;
 import org.springframework.samples.petclinic.model.Visit;
 import org.springframework.samples.petclinic.service.ClinicService;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -61,10 +62,12 @@ public class VisitResource extends AbstractResourceController {
 			throw new BadRequestException("Pet with Id '" + petId + "' is unknown.");
 		}
 
-		// pet.addVisit(visit);
-
 		// clinicService.saveVisit(visit);
-		return clinicService.scheduleVisit(petId, vetId, visit);
+		if (clinicService.scheduleVisit(petId, vetId, visit)) {
+			//pet.addVisit(visit);
+			return true;
+		}
+		return false;
 	}
 
 	@RequestMapping(value = "/pet/{petId}/vet/{vetId}/findvisits", method = RequestMethod.POST)
@@ -74,5 +77,10 @@ public class VisitResource extends AbstractResourceController {
 			throw new InvalidRequestException("Visit is invalid", bindingResult);
 		}
 		return clinicService.findVisitsByDay(petId, vetId, visit.getDate());
+	}
+
+	@GetMapping(value = "/visit/{visitId}/delete")
+	public void deleteVisit(@PathVariable("visitId") int visitId) {
+		clinicService.deleteVisit(visitId);
 	}
 }

@@ -129,4 +129,9 @@ public class ClinicServiceImpl implements ClinicService {
 		return visitRepository.findVisitsByDay(petId, vetId, date);
 	}
 
+	public void deleteVisit(int visitId) {
+		// Visit visit = visitRepository.findById(visitId);
+		visitRepository.deleteVisitById(visitId);
+	}
+
 }

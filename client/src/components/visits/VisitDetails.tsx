@@ -10,8 +10,8 @@ export default class VisitDetails extends React.Component<IVisitsDetailsPageProp
 
   render() {
     const { visits } = this.props;
-    if (visits.length === 0) {
-      return <h2> No Current Visits</h2>;
+    if (!visits) {
+      return;
     }
     return(
   <table className='table table-striped'>
@@ -26,10 +26,10 @@ export default class VisitDetails extends React.Component<IVisitsDetailsPageProp
     <tbody>
     {visits.map(visit => (
       <tr>
-        <td>Some Vet</td>
-        <td>{visit.date}</td>
-        <td>{visit.appointmentStart}</td>
-        <td>visit.appointmentEnd</td>
+        <td>{visit[0].firstName} {visit[0].lastName}</td>
+        <td>{visit[1].date}</td>
+        <td>{visit[1].appointmentStart}</td>
+        <td>visit[2].appointmentEnd</td>
       </tr>
       ))}
     </tbody>
