@@ -26,7 +26,7 @@ componentDidMount() {
     }
     const { onChange } = this.props;
     const handleOnChange = event => {
-    const { value } = event.currentTarget;
+    const { value } = event.target;
     // invoke callback
     onChange(value);
   };

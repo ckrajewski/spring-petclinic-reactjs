@@ -21,9 +21,17 @@ export default class OwnersPage extends React.Component<IOwnersPageProps, IOwner
     super();
 
     this.state = {};
+    this.handleDeleteVisit = this.handleDeleteVisit.bind(this);
+
   }
 
-  componentDidMount() {
+  handleDeleteVisit(name) {
+    const visitId = parseInt(name);
+      fetch(url(`/api/visit/${visitId}/delete`))
+        .then(() => this.fetchOwner());
+  }
+
+  fetchOwner() {
     const { params } = this.props;
 
     if (params && params.ownerId) {
@@ -32,6 +40,9 @@ export default class OwnersPage extends React.Component<IOwnersPageProps, IOwner
         .then(response => response.json())
         .then(owner => this.setState({ owner }));
     }
+  }
+  componentDidMount() {
+    this.fetchOwner();
   }
 
   render() {
@@ -44,7 +55,7 @@ export default class OwnersPage extends React.Component<IOwnersPageProps, IOwner
     return (
       <span>
         <OwnerInformation owner={owner} />
-        <PetsTable owner={owner} />
+        <PetsTable owner={owner} onClick={this.handleDeleteVisit} />
       </span>
     );
   }

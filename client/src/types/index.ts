@@ -32,6 +32,8 @@ export interface IConstraint {
 
 export type IBasicInputChangeHandler = (value: string) => void;
 
+export type IBasicOnCLickHandler = (value: string) => void;
+
 export type IInputChangeHandler = (name: string, value: string, error: IFieldError) => void;
 
 export interface ISelectOption {

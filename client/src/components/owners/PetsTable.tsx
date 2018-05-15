@@ -1,10 +1,9 @@
 import * as React from 'react';
 
 import { Link } from 'react-router';
-import { IOwner, IPet } from '../../types';
-import  DeleteVisit  from '../visits/DeleteVisit';
+import { IOwner, IPet, IBasicOnCLickHandler } from '../../types';
 
-const VisitsTable = ({ownerId, pet}: { ownerId: number, pet: IPet }) => (
+const VisitsTable = ({ownerId, pet }: { ownerId: number, pet: IPet }) => (
   <table className='table-condensed'>
     <thead>
       <tr>
@@ -17,7 +16,7 @@ const VisitsTable = ({ownerId, pet}: { ownerId: number, pet: IPet }) => (
         <tr key={visit.id}>
           <td>{visit.date}</td>
           <td>{visit.description}</td>
-          <td> <DeleteVisit visit={visit}/> </td>
+          <td> <button name={visit.id.toString()}> Delete Visit </button> </td>
         </tr>
       ))}
       <tr>
@@ -32,7 +31,14 @@ const VisitsTable = ({ownerId, pet}: { ownerId: number, pet: IPet }) => (
   </table>
 );
 
-export default ({owner}: { owner: IOwner }) => (
+export default ({owner, onClick}: { owner: IOwner, onClick: IBasicOnCLickHandler}) => {
+  const handleOnClickDelete = event => {
+    event.stopPropagation();
+    const value  = event.target.name;
+    // invoke callback
+    onClick(value);
+  };
+  return (
   <section>
     <h2>Pets and Visits</h2>
     <table className='table table-striped'>
@@ -49,7 +55,7 @@ export default ({owner}: { owner: IOwner }) => (
                 <dd>{pet.type.name}</dd>
               </dl>
             </td>
-            <td style={{ 'verticalAlign': 'top' }}>
+            <td style={{ 'verticalAlign': 'top' }} onClick={handleOnClickDelete}>
               <VisitsTable ownerId={owner.id} pet={pet} />
             </td>
           </tr>
@@ -58,3 +64,4 @@ export default ({owner}: { owner: IOwner }) => (
     </table>
   </section>
 );
+};
