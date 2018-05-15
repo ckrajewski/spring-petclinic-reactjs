@@ -2,12 +2,15 @@ import * as React from 'react';
 
 import { Link } from 'react-router';
 import { IOwner, IPet, IBasicOnCLickHandler } from '../../types';
+const moment = require('moment');
 
 const VisitsTable = ({ownerId, pet }: { ownerId: number, pet: IPet }) => (
   <table className='table-condensed'>
     <thead>
       <tr>
         <th>Visit Date</th>
+        <th>Start Time</th>
+        <th>End Time</th>
         <th>Description</th>
       </tr>
     </thead>
@@ -15,6 +18,8 @@ const VisitsTable = ({ownerId, pet }: { ownerId: number, pet: IPet }) => (
       {pet.visits.map(visit => (
         <tr key={visit.id}>
           <td>{visit.date}</td>
+          <td>{moment(visit.appointmentStart).format('hh:mm a')}</td>
+          <td>{moment(visit.appointmentEnd).format('hh:mm a')}</td>
           <td>{visit.description}</td>
           <td> <button name={visit.id.toString()}> Delete Visit </button> </td>
         </tr>

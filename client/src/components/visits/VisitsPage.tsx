@@ -34,7 +34,8 @@ interface IVisitsPageState {
   error?: IError;
   vets ?: IVet[];
   date ?: Date;
-  time ?: string;
+  defaultStartTime ?: string;
+  defaultEndTime ?: string;
   vetId ?: string;
   vetDates ?: Date[];
   visits ?: IVisit[];
@@ -79,8 +80,9 @@ componentDidMount() {
           {
             owner: owner,
             date : today,
-            time : moment(today).hour(8).minute(0),
             vetId: '',
+            defaultStartTime: moment(today).hour(8).minute(0),
+            defaultEndTime: moment(today).hour(9).minute(0),
             visit:
             {
               id: null,
@@ -145,13 +147,18 @@ componentDidMount() {
       visit: Object.assign({}, visit, { date: formattedDate }) });
   }
 
-  onAppontmentStarTimeChange = time => {
+  onAppontmentStartTimeChange = time => {
     this.validateAppointmentTime(time);
     const { date, visit } = this.state;
-    const formattedStartTime = moment(date + ' ' + time).format('YYYY/MM/DD HH:mm:ss');
-    const formattedEndTime = moment(date + ' ' + time).add(1, 'hours').format('YYYY/MM/DD HH:mm:ss');
-    this.setState({ time: time,
-      visit: Object.assign({}, visit, { appointmentStart: formattedStartTime, appointmentEnd: formattedEndTime }) });
+    const formattedStartTime = moment(date).hour(time.hour()).minute(time.minute()).format('YYYY/MM/DD HH:mm:ss');
+    this.setState({ visit: Object.assign({}, visit, { appointmentStart: formattedStartTime }) });
+  }
+
+  onAppontmentEndTimeChange = time => {
+    this.validateAppointmentTime(time);
+    const { date, visit } = this.state;
+    const formattedEndTime = moment(date).hour(time.hour()).minute(time.minute()).format('YYYY/MM/DD HH:mm:ss');
+    this.setState({ visit: Object.assign({}, visit, { appointmentEnd: formattedEndTime }) });
   }
 
   validateAppointmentTime(time) {
@@ -168,7 +175,7 @@ componentDidMount() {
       return <h2>Loading...</h2>;
     }
 
-    const { owner, error, time, visit, visits } = this.state;
+    const { owner, error, visit, visits, defaultStartTime, defaultEndTime } = this.state;
    // const today = moment.format(date, 'MM/DD');
     const petId = this.props.params.petId;
 
@@ -185,13 +192,23 @@ componentDidMount() {
         />
     Select Appointment for
     <VisitVetsList onChange={this.setVetId}/>
-        At
+        From
         <TimePicker
     showSecond={false}
-    defaultValue={time}
+    defaultValue={defaultStartTime}
     className='xxx'
     format={myformat}
-    onChange={this.onAppontmentStarTimeChange}
+    onChange={this.onAppontmentStartTimeChange}
+    use12Hours
+    inputReadOnly
+    />
+    Until
+    <TimePicker
+    showSecond={false}
+    defaultValue={defaultEndTime}
+    className='xxx'
+    format={myformat}
+    onChange={this.onAppontmentEndTimeChange}
     use12Hours
     inputReadOnly
     />
