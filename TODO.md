@@ -1,24 +1,18 @@
 # To be done
-- [x] missing pages
+- [x] schedule a visit
 - [ ] localization
 - [ ] align error messages in validations from server and client
-- [ ] Submitting a form should only be possible if no errors in form
-- [ ] Replace <a ... /> with <Link ... />
-- [ ] Table => Sortable Table (https://github.com/glittershark/reactable/blob/master/README.md)
-- [ ] REST calls not resulting in valid JSON (i.e. 500) must be handled correctly (or make sure on server side that we ALWAYS get json). Anyway those errors must be shown to the user not only on the console.
+- [x] Creating a visit should not be possible if requirements (i.e. date/description) are missing (Client side validation only)
+- [ ] Supplement client side validation with server side validation
+- [ ] Ensure that the current format of selecting appointment start time + end time meets P.O. requirements
+- [ ] Add more security for delete records (should not just be a simple get operation)
+- [ ] Existing JUnit tests are passing, but more should be added to test newly added visit functionality
+- [ ] Better error and messaging handling (most are done through alerts on the VisitsPage currently)
 
 # Refactoring / Clean up
 - [ ] General clean-up as this is an own repository now and not only a branch
-- [ ] Centralize fetch calls in own function and add error handling
-- [ ] maybe centralize location handling (push / redirect to other url) to remove need of context in components
-- [ ] OwnersPage => OwnerPage
-- [ ] align singular vs plural in HTTP api endpoints, client folder names and page names
-- [ ] centralize loading of an owner (EditOwnerPage, OwnersPage) and handle 404 from API
-- [ ] remove isNew from API (use id===null instead)
-- [ ] IBaseEntity: id as 'any'?
-- [ ] Refactor/Clean-up IPetRequest, IEditablePet (also on Server PetRequest)
-- [ ] Base on [spring-petclinic-microservices](https://github.com/spring-petclinic/spring-petclinic-microservices) 
-- [x] Remove JSP pages and static resources from the Spring Boot backend
+- [ ] Use Redux to centralize back end calls. Can be organized through having a seperate folder for different  actions so they can be imported when needed
+- [ ]  Update to latest Typescript version (currently 2.0.10)
 
 # New Features
 - [x] add client-side validation to input fields to show advantage of SPA 
@@ -28,5 +22,5 @@
 
 # Differences from original spring boot example
 * Client-side validation
-
-
+* Can now add appointments using a cool calendar UI!
+* Can select appointment time ranges too!
