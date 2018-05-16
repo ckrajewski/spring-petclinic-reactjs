@@ -62,6 +62,7 @@ export interface IVisit extends IBaseEntity {
   description: string;
   appointmentStart: string;
   appointmentEnd: string;
+  vet?: IVet;
 };
 
 export interface IPetType extends INamedEntity {
@@ -72,7 +73,7 @@ export type IPetTypeId = number;
 export interface IPet extends INamedEntity {
   birthDate: Date;
   type: IPetType;
-  visits: IVisit[];
+  visits?: IVisit[];
 };
 
 // TODO
