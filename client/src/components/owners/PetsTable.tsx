@@ -19,7 +19,7 @@ const VisitsTable = ({ownerId, pet }: { ownerId: number, pet: IPet }) => (
       {pet.visits.map(visit => (
         <tr key={visit.id}>
           <td>{visit.vet.firstName} {visit.vet.lastName}</td>
-          <td>{visit.date}</td>
+          <td>{moment(visit.date).format('MM/DD/YYYY')}</td>
           <td>{moment(visit.appointmentStart).format('hh:mm a')}</td>
           <td>{moment(visit.appointmentEnd).format('hh:mm a')}</td>
           <td>{visit.description}</td>

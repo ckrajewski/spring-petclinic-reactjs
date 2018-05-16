@@ -15,8 +15,6 @@
  */
 package org.springframework.samples.petclinic.web.api;
 
-import java.util.List;
-
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,21 +60,10 @@ public class VisitResource extends AbstractResourceController {
 			throw new BadRequestException("Pet with Id '" + petId + "' is unknown.");
 		}
 
-		// clinicService.saveVisit(visit);
 		if (clinicService.scheduleVisit(petId, vetId, visit)) {
-			//pet.addVisit(visit);
 			return true;
 		}
 		return false;
-	}
-
-	@RequestMapping(value = "/pet/{petId}/vet/{vetId}/findvisits", method = RequestMethod.POST)
-	public List<Visit> findVisitsByDay(@PathVariable("petId") int petId, @PathVariable("vetId") int vetId,
-			@Valid @RequestBody Visit visit, BindingResult bindingResult) {
-		if (bindingResult.hasErrors()) {
-			throw new InvalidRequestException("Visit is invalid", bindingResult);
-		}
-		return clinicService.findVisitsByDay(petId, vetId, visit.getDate());
 	}
 
 	@GetMapping(value = "/visit/{visitId}/delete")

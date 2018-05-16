@@ -18,7 +18,6 @@ package org.springframework.samples.petclinic.service;
 import java.util.Collection;
 import java.util.List;
 
-import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.dao.DataAccessException;
@@ -125,12 +124,7 @@ public class ClinicServiceImpl implements ClinicService {
 		}
 	}
 
-	public List<Visit> findVisitsByDay(int petId, int vetId, LocalDate date) {
-		return visitRepository.findVisitsByDay(petId, vetId, date);
-	}
-
 	public void deleteVisit(int visitId) {
-		// Visit visit = visitRepository.findById(visitId);
 		visitRepository.deleteVisitById(visitId);
 	}
 

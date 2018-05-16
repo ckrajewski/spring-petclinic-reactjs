@@ -40,7 +40,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 public class Visit extends BaseEntity {
 
 	/**
-	 * Holds value of property date.
+	 * Holds value of visit date.
 	 */
 	@Column(name = "visit_date")
 	@Type(type = "org.jadira.usertype.dateandtime.joda.PersistentLocalDate")
@@ -49,7 +49,7 @@ public class Visit extends BaseEntity {
 	private LocalDate date;
 
 	/**
-	 * Holds value of appointment start.
+	 * Holds value of appointment (should have called it visit) start.
 	 */
 	@Column(name = "visit_start")
 	@Type(type = "org.jadira.usertype.dateandtime.joda.PersistentLocalDateTime")
@@ -58,7 +58,7 @@ public class Visit extends BaseEntity {
 	private LocalDateTime appointmentStart;
 
 	/**
-	 * Holds value of appointment start.
+	 * Holds value of appointment (should have called it visit) end.
 	 */
 	@Column(name = "visit_end")
 	@Type(type = "org.jadira.usertype.dateandtime.joda.PersistentLocalDateTime")

@@ -17,7 +17,6 @@ package org.springframework.samples.petclinic.repository;
 
 import java.util.List;
 
-import org.joda.time.LocalDate;
 import org.joda.time.LocalDateTime;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.jpa.repository.Modifying;
@@ -69,8 +68,5 @@ public interface VisitRepository extends Repository<Visit, Integer> {
 	List<Visit> findVisitsBySchedule(@Param("petId") int petId, @Param("vetId") int vetId,
 			@Param("appointmentStart") LocalDateTime appointmentStart,
 			@Param("appointmentEnd") LocalDateTime appointmentEnd);
-
-	@Query("SELECT vet, visit FROM Visit visit, Vet vet WHERE visit.vet.id =:vetId AND vet.id =visit.vet.id AND visit.pet.id=:petId AND visit.date=:date")
-	List<Visit> findVisitsByDay(@Param("petId") int petId, @Param("vetId") int vetId, @Param("date") LocalDate date);
 
 }

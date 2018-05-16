@@ -16,9 +16,7 @@
 package org.springframework.samples.petclinic.service;
 
 import java.util.Collection;
-import java.util.List;
 
-import org.joda.time.LocalDate;
 import org.springframework.dao.DataAccessException;
 import org.springframework.samples.petclinic.model.Owner;
 import org.springframework.samples.petclinic.model.Pet;
@@ -50,8 +48,6 @@ public interface ClinicService {
 	Collection<Owner> findOwnerByLastName(String lastName) throws DataAccessException;
 
 	Collection<Visit> findVisitsByPetId(int petId);
-
-	List<Visit> findVisitsByDay(int petId, int vetId, LocalDate date);
 
 	boolean scheduleVisit(int petId, int vetId, Visit visit);
 
