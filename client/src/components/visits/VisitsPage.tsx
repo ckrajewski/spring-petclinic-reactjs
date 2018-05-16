@@ -103,6 +103,14 @@ componentDidMount() {
     if (!this.validateAppointmentTime(visit.appointmentStart)) {
       return;
     }
+    if (visit.description.trim().length === 0) {
+      alert('Description cannot be empty');
+      return;
+    }
+    if (!vetId) {
+      alert('Please select a vet');
+      return;
+    }
     const request = {
       date: visit.date,
       appointmentStart: visit.appointmentStart,
@@ -212,7 +220,7 @@ componentDidMount() {
     />
       <div>
       <Input object={visit} error={error} constraint={NotEmpty} label='Description' name='description' onChange={this.onInputChange} />
-     <button className='btn btn-default' type='submit' onClick={this.onSubmit}>Add Visit</button>
+      <button className='btn btn-default' type='submit' onClick={this.onSubmit}>Add Visit</button>
       </div>
       </div>
     );
