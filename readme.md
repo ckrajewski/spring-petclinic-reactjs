@@ -12,11 +12,24 @@ If you like to help and contribute (there's lot root for improvements! I've coll
 
 Note: Spring Boot Server App must be running before starting the client!
 
-To start the server, launch a Terminal and run from the project's root folder (`spring-petclinic -reactjs`):
+To start the server, launch a Terminal and run from the project's root folder (`spring-petclinic -reactjs`) using maven.
+
+
 ```
 ./mvnw install
 ```
 The install will take a bit, so feel free to take a quick coffee break :)
+
+If you receive an error like this:
+```
+Exception in thread "main" java.lang.UnsupportedClassVersionError: org/apache/maven/cli/MavenCli : Unsupported major.minor version 51.0
+```
+Esnure that you're $JAVA_HOME path is set correctly. i.e
+```
+export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk1.8.0_131.jdk/Contents/Home/
+```
+Once it's installed, run:
+
 ```
 ./mvnw spring-boot:run
 ```
@@ -66,6 +79,7 @@ I also have a problem with wanting it to be better and better. I had fun looking
 But even so, it can always be better. I didn't really do any CSS, not to mention I need to add server side validation, and taking advantage of Redux (see list of To Dos)
 
 ## How do you feel about coding an exercise as a step in the interview process?  (1 lowest, 10 highest—awesome way to assess coding ability)
+
 
 10
 This is a great way to assess a coder's ability in my opinion. Doing research, assessing the scope of a project, getting your hands dirty. That's fun. Way more fun that a whiteboard interview.
