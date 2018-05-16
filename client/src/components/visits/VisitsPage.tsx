@@ -8,9 +8,7 @@ import { NotEmpty } from '../form/Constraints';
 import DateInput from '../form/DateInput';
 import Input from '../form/Input';
 import PetDetails from './PetDetails';
-import VisitDetails from './VisitDetails';
 import VisitVetsList from './VisitVetsList';
-
 
 const TimePicker = require('rc-time-picker');
 
