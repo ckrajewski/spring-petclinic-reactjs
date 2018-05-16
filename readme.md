@@ -72,14 +72,12 @@ In addition, some of the struggle was my own fault. I'm happy I did a React base
 
 ## How did you feel about the exercise itself? (1 lowest, 10 highest—awesome way to assess coding ability)
 
-10
-This exercise was awesome. While certainly challenging at times, I found myself unable to stop working on it.
+I'd give it a 10. This exercise was awesome. While certainly challenging at times, I found myself unable to stop working on it.
 My onl gripe would be that the suggested time of 1-4 hours was way off. I had a feeling that this number was purposefully low to show that a developer should always feel free to ensure that he understands the scope of the project, and makes the P.O aware of this.
 I also have a problem with wanting it to be better and better. I had fun looking at NPM packages (like the calendar) and making the front end well designed.
 But even so, it can always be better. I didn't really do any CSS, not to mention I need to add server side validation, and taking advantage of Redux (see list of To Dos)
 
 ## How do you feel about coding an exercise as a step in the interview process?  (1 lowest, 10 highest—awesome way to assess coding ability)
-
 
 I'd give it a 10. This is a great way to assess a coder's ability in my opinion. Doing research, assessing the scope of a project, getting your hands dirty. That's fun. Way more fun that a whiteboard interview.
 ------
