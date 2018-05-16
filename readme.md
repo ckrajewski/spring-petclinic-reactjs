@@ -47,7 +47,7 @@ In case you have any comments, questions, bugs, enhancements feel free to open a
 
 # Coding Excerise Feedback
 
-For reference, please see the list of the [requirements](https://github.com/ckrajewski/spring-petclinic-reactjs/blob/master/)
+For reference, please see the list of the [requirements](https://github.com/ckrajewski/spring-petclinic-reactjs/blob/master/Full%20Stack%20Coding%20Challenge%20.docx)
 
 ## Exercise Difficulty : Easy, Moderate, Difficult, Very Difficult
 
