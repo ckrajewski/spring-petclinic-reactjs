@@ -81,8 +81,7 @@ But even so, it can always be better. I didn't really do any CSS, not to mention
 ## How do you feel about coding an exercise as a step in the interview process?  (1 lowest, 10 highest—awesome way to assess coding ability)
 
 
-10
-This is a great way to assess a coder's ability in my opinion. Doing research, assessing the scope of a project, getting your hands dirty. That's fun. Way more fun that a whiteboard interview.
+I'd give it a 10. This is a great way to assess a coder's ability in my opinion. Doing research, assessing the scope of a project, getting your hands dirty. That's fun. Way more fun that a whiteboard interview.
 ------
  
 ## What would you change in the exercise and/or process?
