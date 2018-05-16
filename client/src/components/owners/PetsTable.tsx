@@ -8,6 +8,7 @@ const VisitsTable = ({ownerId, pet }: { ownerId: number, pet: IPet }) => (
   <table className='table-condensed'>
     <thead>
       <tr>
+        <th>Vet Name</th>
         <th>Visit Date</th>
         <th>Start Time</th>
         <th>End Time</th>
@@ -17,6 +18,7 @@ const VisitsTable = ({ownerId, pet }: { ownerId: number, pet: IPet }) => (
     <tbody>
       {pet.visits.map(visit => (
         <tr key={visit.id}>
+          <td>{visit.vet.firstName} {visit.vet.lastName}</td>
           <td>{visit.date}</td>
           <td>{moment(visit.appointmentStart).format('hh:mm a')}</td>
           <td>{moment(visit.appointmentEnd).format('hh:mm a')}</td>

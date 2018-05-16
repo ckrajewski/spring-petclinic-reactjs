@@ -86,7 +86,6 @@ public class Visit extends BaseEntity {
 	 */
 	@ManyToOne
 	@JoinColumn(name = "vet_id")
-	@JsonIgnore
 	private Vet vet;
 
 	/**
@@ -211,5 +210,17 @@ public class Visit extends BaseEntity {
 	public LocalDateTime getAppointmentEnd() {
 		return this.appointmentEnd;
 	}
-
+	/*
+	 * protected Set<Vet> getVetsInternal() { if (this.vets == null) { this.vets
+	 * = new HashSet<>(); } return this.vets; }
+	 * 
+	 * protected void setVetsInternal(Set<Vet> vets) { this.vets = vets; }
+	 * 
+	 * public List<Vet> getVets() { List<Vet> sortedVets = new
+	 * ArrayList<>(getVetsInternal()); PropertyComparator.sort(sortedVets, new
+	 * MutableSortDefinition("name", true, true)); return
+	 * Collections.unmodifiableList(sortedVets); }
+	 * 
+	 * public void addVet(Vet vet) { getVetsInternal().add(vet); }
+	 */
 }
