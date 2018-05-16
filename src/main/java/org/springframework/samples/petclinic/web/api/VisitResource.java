@@ -15,6 +15,8 @@
  */
 package org.springframework.samples.petclinic.web.api;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,9 +25,11 @@ import org.springframework.samples.petclinic.model.Pet;
 import org.springframework.samples.petclinic.model.Visit;
 import org.springframework.samples.petclinic.service.ClinicService;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -45,9 +49,10 @@ public class VisitResource extends AbstractResourceController {
 		this.clinicService = clinicService;
 	}
 
-	@PostMapping("/owners/{ownerId}/pets/{petId}/visits")
-	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void createÏ(@PathVariable("petId") int petId, @Valid @RequestBody Visit visit, BindingResult bindingResult) {
+	@RequestMapping(value = "/pet/{petId}/vet/{vetId}/createvisit", method = RequestMethod.POST)
+	@ResponseStatus(HttpStatus.CREATED)
+	public boolean createVet(@PathVariable("petId") int petId, @PathVariable("vetId") int vetId,
+			@Valid @RequestBody Visit visit, BindingResult bindingResult) {
 		if (bindingResult.hasErrors()) {
 			throw new InvalidRequestException("Visit is invalid", bindingResult);
 		}
@@ -57,8 +62,25 @@ public class VisitResource extends AbstractResourceController {
 			throw new BadRequestException("Pet with Id '" + petId + "' is unknown.");
 		}
 
-		pet.addVisit(visit);
+		// clinicService.saveVisit(visit);
+		if (clinicService.scheduleVisit(petId, vetId, visit)) {
+			//pet.addVisit(visit);
+			return true;
+		}
+		return false;
+	}
 
-		clinicService.saveVisit(visit);
+	@RequestMapping(value = "/pet/{petId}/vet/{vetId}/findvisits", method = RequestMethod.POST)
+	public List<Visit> findVisitsByDay(@PathVariable("petId") int petId, @PathVariable("vetId") int vetId,
+			@Valid @RequestBody Visit visit, BindingResult bindingResult) {
+		if (bindingResult.hasErrors()) {
+			throw new InvalidRequestException("Visit is invalid", bindingResult);
+		}
+		return clinicService.findVisitsByDay(petId, vetId, visit.getDate());
+	}
+
+	@GetMapping(value = "/visit/{visitId}/delete")
+	public void deleteVisit(@PathVariable("visitId") int visitId) {
+		clinicService.deleteVisit(visitId);
 	}
 }

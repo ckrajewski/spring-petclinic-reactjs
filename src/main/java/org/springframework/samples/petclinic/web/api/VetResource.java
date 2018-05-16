@@ -28,15 +28,16 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class VetResource extends AbstractResourceController {
 
-    private final ClinicService clinicService;
+	private final ClinicService clinicService;
 
-    @Autowired
-    public VetResource(ClinicService clinicService) {
-        this.clinicService = clinicService;
-    }
-    
-    @GetMapping(value="/vets")
-    public Collection<Vet> showResourcesVetList() {
-        return this.clinicService.findVets();
-    }
+	@Autowired
+	public VetResource(ClinicService clinicService) {
+		this.clinicService = clinicService;
+	}
+
+	@GetMapping(value = "/vets")
+	public Collection<Vet> showResourcesVetList() {
+		return this.clinicService.findVets();
+	}
+
 }

@@ -1,21 +1,29 @@
 import * as React from 'react';
 
 import { Link } from 'react-router';
-import { IOwner, IPet } from '../../types';
+import { IOwner, IPet, IBasicOnCLickHandler } from '../../types';
+const moment = require('moment');
 
-const VisitsTable = ({ownerId, pet}: { ownerId: number, pet: IPet }) => (
+const VisitsTable = ({ownerId, pet }: { ownerId: number, pet: IPet }) => (
   <table className='table-condensed'>
     <thead>
       <tr>
+        <th>Vet Name</th>
         <th>Visit Date</th>
+        <th>Start Time</th>
+        <th>End Time</th>
         <th>Description</th>
       </tr>
     </thead>
     <tbody>
       {pet.visits.map(visit => (
         <tr key={visit.id}>
+          <td>{visit.vet.firstName} {visit.vet.lastName}</td>
           <td>{visit.date}</td>
+          <td>{moment(visit.appointmentStart).format('hh:mm a')}</td>
+          <td>{moment(visit.appointmentEnd).format('hh:mm a')}</td>
           <td>{visit.description}</td>
+          <td> <button name={visit.id.toString()}> Delete Visit </button> </td>
         </tr>
       ))}
       <tr>
@@ -30,7 +38,14 @@ const VisitsTable = ({ownerId, pet}: { ownerId: number, pet: IPet }) => (
   </table>
 );
 
-export default ({owner}: { owner: IOwner }) => (
+export default ({owner, onClick}: { owner: IOwner, onClick: IBasicOnCLickHandler}) => {
+  const handleOnClickDelete = event => {
+    event.stopPropagation();
+    const value  = event.target.name;
+    // invoke callback
+    onClick(value);
+  };
+  return (
   <section>
     <h2>Pets and Visits</h2>
     <table className='table table-striped'>
@@ -47,7 +62,7 @@ export default ({owner}: { owner: IOwner }) => (
                 <dd>{pet.type.name}</dd>
               </dl>
             </td>
-            <td style={{ 'verticalAlign': 'top' }}>
+            <td style={{ 'verticalAlign': 'top' }} onClick={handleOnClickDelete}>
               <VisitsTable ownerId={owner.id} pet={pet} />
             </td>
           </tr>
@@ -56,3 +71,4 @@ export default ({owner}: { owner: IOwner }) => (
     </table>
   </section>
 );
+};

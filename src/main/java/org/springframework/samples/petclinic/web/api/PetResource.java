@@ -40,9 +40,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class PetResource extends AbstractResourceController {
 
-	private final Logger				logger	= LoggerFactory.getLogger(getClass());
+	private final Logger logger = LoggerFactory.getLogger(getClass());
 
-	private final ClinicService	clinicService;
+	private final ClinicService clinicService;
 
 	@Autowired
 	public PetResource(ClinicService clinicService) {
@@ -77,7 +77,8 @@ public class PetResource extends AbstractResourceController {
 
 	@PutMapping("/owners/{ownerId}/pets/{petId}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void processUpdateForm(final @PathVariable("petId") int petId, final @Valid @RequestBody PetRequest petRequest, final BindingResult bindingResult) {
+	public void processUpdateForm(final @PathVariable("petId") int petId,
+			final @Valid @RequestBody PetRequest petRequest, final BindingResult bindingResult) {
 
 		if (bindingResult.hasErrors()) {
 			throw new InvalidRequestException("Submitted Pet invalid", bindingResult);
