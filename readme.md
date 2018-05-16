@@ -10,6 +10,12 @@ If you like to help and contribute (there's lot root for improvements! I've coll
 
 ## Install and run
 
+First clone the repository:
+
+```
+git clone https://github.com/ckrajewski/spring-petclinic-reactjs.git
+```
+
 Note: Spring Boot Server App must be running before starting the client!
 
 To start the server, launch a Terminal and run from the project's root folder (`spring-petclinic -reactjs`) using maven.
